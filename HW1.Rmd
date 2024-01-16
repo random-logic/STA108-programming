@@ -11,9 +11,40 @@ Yes, E{Y} will still be 104 because the expected value is calculated over many o
 Observational data, because we are observing two variables to determine if there is a correlation. We observed time spent in exercise and frequency of colds and found a negative correlation.
 
 ## 1.27
-??
-```{r}
-```
+a. See appendix for R code. My plot supports that musscle mass decreases as age increases because the regression line has a negative slope.
+b.
+    1. ??
+    2. 
+    3. 
+    4. 
 
 ## 1.30
-??
+The implication is that the dependent variable is not affected by the independent variable. The regression function would be a horizontal line on a graph with a y-intercept of $\beta_0$.
+
+# Appendix
+## 1.27(a)
+```{r}
+file_path <- "CH01PR27.txt"
+data <- read.table(file_path)
+y <- data$V1
+x <- data$V2
+
+model <- lm(y ~ x, data = data)
+intercept <- coef(model)[1]
+slope <- coef(model)[2]
+cat("y = ", round(intercept, 2), " + ", round(slope, 2), "x\n", sep = "")
+
+plot(x, y, xlab = "age", ylab = "musscle mass")
+abline(model)
+```
+
+## 1.27(b)
+### 1
+```{r}
+"??"
+```
+
+### 2
+```{r}
+"??"
+```
