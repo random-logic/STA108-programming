@@ -5,7 +5,7 @@ $y = 2x + 300$ <br>
 This is a functional relation because there is no randomness involved. At x visits, we know 100% what y would be.
 
 ## 1.8
-??
+Yes, E{Y} will still be 104 because the expected value is calculated over many observations, not on one observation. No, the Y value does not have to be 108, because the sampling is random. ??
 
 ## 1.12
 Observational data, because we are observing two variables to determine if there is a correlation. We observed time spent in exercise and frequency of colds and found a negative correlation.
