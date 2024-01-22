@@ -1,0 +1,59 @@
+```{r echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 1.27-b4
+```{r}
+
+# 1.27-b4
+file_path <- "CH01PR27.txt"
+data <- read.table(file_path)
+y <- data$V1
+x <- data$V2
+
+model <- lm(y ~ x, data = data)
+residual <- residuals(model)
+var(residual)
+```
+$\hat{\sigma}^2 = s^2 = 65.6686$
+
+# 2.6-a ?? how to do this by hand?
+```{r}
+
+# 2.6-a
+x_i <- c(1, 0, 2, 0, 3, 1, 0, 1, 2, 0)
+y_i <- c(16, 9, 17, 12, 22, 13, 8, 15, 19, 11)
+
+x_bar <- mean(x_i)
+y_bar <- mean(y_i)
+
+sum((x_i - x_bar) * (y_i - y_bar)) / sum((x_i - x_bar) ** 2)
+```
+We can estimate $\beta_1$ with $b_1$.
+<br>$b_1 = 4$
+
+# rest of 2.6 ??
+$\alpha = 0.05$
+
+# 2.27-a ?? t-test for means, not for correlation
+```{r}
+
+# 2.27-a
+alpha <- 0.05
+df <- 59
+result <- t.test(x, y)
+cv <- qt(alpha, df)
+
+cat("t =", cv)
+cat("t_s =", result$statistic)
+cat("p =", result$p.value)
+```
+$\alpha = 0.05$
+<br> The null hypothesis is there is no negative correlation ($\rho \geq 0$). The alternative hypothesis is there is a negative correlation ($\rho < 0$). Using a left tail test where $\alpha = 0.05$ and $\nu = 60 - 1 = 59$, our critical t-value is  $t = -1.671093$. Our test statistic is $t_s = -9.652938$. Since $t_s < t$, we reject the null hypothesis. So we conclude there is a negative correlation. Our p-value is $2.918022 * 10^{-16}$.
+
+# rest ??
+
+
+# Appendix
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
