@@ -17,10 +17,11 @@ var(residual)
 ```
 $\hat{\sigma}^2 = s^2 = 65.6686$
 
-# 2.6-a ?? how to do this by hand?
+# 2.6-a ?? hand calculations
 ```{r}
 
 # 2.6-a
+n <- 10
 x_i <- c(1, 0, 2, 0, 3, 1, 0, 1, 2, 0)
 y_i <- c(16, 9, 17, 12, 22, 13, 8, 15, 19, 11)
 
@@ -35,13 +36,47 @@ mse <- 1 / (n - 2) * sum((y_i - y_i_hat) ** 2)
 
 se_beta_1_hat <- sqrt(mse / sum((x_i - x_bar) ** 2))
 
-# todo: get t_s ??
-```
-We can estimate $\beta_1$ with $b_1$.
-<br>$b_1 = 4$
+critical_t_value <- 2.2621
 
-# rest of 2.6 ??
-$\alpha = 0.05$
+confidence_lower_bound <- beta_1_hat - critical_t_value * se_beta_1_hat
+confidence_upper_bound <- beta_1_hat + critical_t_value * se_beta_1_hat
+cat("[", confidence_lower_bound, ", ", confidence_upper_bound, "]", sep = "")
+```
+The 95% confidence interval for $\beta_1$ is [2.938981, 5.061019]. This means that we are 95% certain that $\beta_1 \in [2.938981, 5.061019]$.
+
+# 2.6-b
+```{r}
+
+# 2.6-b
+t_s <- (beta_1_hat - 0) / se_beta_1_hat
+cat("t =", critical_t_value)
+cat("t_s =", t_s)
+```
+The null hypothesis is that there is no linear relationship ($\beta_1 = 0$). The alternate hypothesis is that there is a linear relationship ($\beta_1 \neq 0$). Since the test statistic ($t_s = 8.528029$) is greater than the critical t-value ($t = 2.2621$), we reject the null hypothesis. Therefore, there is a linear relationship. ?? P-value
+
+# 2.6-c
+```{r}
+
+# 2.6-c
+se_beta_0_hat <- mse * (1 / n + x_bar ** 2 / sum((x_i - x_bar) ** 2))
+
+confidence_lower_bound <- beta_0_hat - critical_t_value * se_beta_0_hat
+confidence_upper_bound <- beta_0_hat + critical_t_value * se_beta_0_hat
+cat("[", confidence_lower_bound, ", ", confidence_upper_bound, "]", sep = "")
+```
+The 95% confidence interval for $\beta_0$ is [9.204676, 11.19532]. This means that we are 95% certain that $\beta_0 \in [9.204676, 11.19532]$.
+
+# 2.6-d
+```{r}
+t <- 2.2621
+t_s <- (beta_0_hat - 9) / se_beta_0_hat
+cat("t =", critical_t_value)
+cat("t_s =", t_s)
+```
+The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\beta_0 \leq 9.0$). The alternate hypothesis is that the mean number of ampules does exceed 9.0 ($\beta_0 > 9.0$). Since the test statistic ($t_s = 2.727273$) is greater than the critical t-value ($2.2621$), we reject the null hypotehsis. Therefore, the mean number of ampules does exceed 9.0. ?? P-value
+
+# 2.6-e
+
 
 # 2.27-a ?? t-test for means, not for correlation
 ```{r}
@@ -57,7 +92,7 @@ cat("t_s =", result$statistic)
 cat("p =", result$p.value)
 ```
 $\alpha = 0.05$
-<br> The null hypothesis is there is no negative correlation ($\rho \geq 0$). The alternative hypothesis is there is a negative correlation ($\rho < 0$). Using a left tail test where $\alpha = 0.05$ and $\nu = 60 - 1 = 59$, our critical t-value is  $t = -1.671093$. Our test statistic is $t_s = -9.652938$. Since $t_s < t$, we reject the null hypothesis. So we conclude there is a negative correlation. Our p-value is $2.918022 * 10^{-16}$.
+<br> The null hypothesis is there is no negative correlation ($\beta_1 \geq 0$). The alternative hypothesis is there is a negative correlation ($\beta_1 < 0$). Using a left tail test where $\alpha = 0.05$ and $\nu = 60 - 1 = 59$, our critical t-value is  $t = -1.671093$. Our test statistic is $t_s = -9.652938$. Since $t_s < t$, we reject the null hypothesis. So we conclude there is a negative correlation. Our p-value is $2.918022 * 10^{-16}$.
 
 # rest ??
 
