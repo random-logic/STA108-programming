@@ -76,7 +76,7 @@ cat("t_s =", t_s)
 The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\beta_0 \leq 9.0$). The alternate hypothesis is that the mean number of ampules does exceed 9.0 ($\beta_0 > 9.0$). Since the test statistic ($t_s = 2.727273$) is greater than the critical t-value ($2.2621$), we reject the null hypotehsis. Therefore, the mean number of ampules does exceed 9.0. ?? P-value
 
 # 2.6-e
-
+??
 
 # 2.27-a ?? t-test for means, not for correlation
 ```{r}
@@ -90,12 +90,18 @@ cv <- qt(alpha, df)
 cat("t =", cv)
 cat("t_s =", result$statistic)
 cat("p =", result$p.value)
+
+# Get regression summary
+summary_model <- summary(model)
+summary_model$coefficients["x", "Pr(>|t|)"]
 ```
 $\alpha = 0.05$
-<br> The null hypothesis is there is no negative correlation ($\beta_1 \geq 0$). The alternative hypothesis is there is a negative correlation ($\beta_1 < 0$). Using a left tail test where $\alpha = 0.05$ and $\nu = 60 - 1 = 59$, our critical t-value is  $t = -1.671093$. Our test statistic is $t_s = -9.652938$. Since $t_s < t$, we reject the null hypothesis. So we conclude there is a negative correlation. Our p-value is $2.918022 * 10^{-16}$.
+<br> The null hypothesis is there is no negative correlation ($\beta_1 \geq 0$). The alternative hypothesis is there is a negative correlation ($\beta_1 < 0$). Using a left tail test where $\alpha = 0.05$, we reject the null hypotehsis when the p-value is less than alpha ($\rho < 0.05$), while we fail to reject the null when the p-value is greater than alpha ($\alpha > 0.05$). Our p-value is $4.123987e-19$, so we reject the null hypotehsis. Therefore, we conclude there is a negative correlation.
 
-# rest ??
+# 2.27-b
+??
 
+# 2.28-a
 
 # Appendix
 ```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
