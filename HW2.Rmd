@@ -109,6 +109,28 @@ cat("Confidence Interval is [", lb_b1hat, ", ", ub_b1hat, "]", sep = "")
 It is not necessary to know the ages to make the estimate because we are making an overall estimate, not an estimate at a specific age.
 
 # 2.28-a
+```{r}
+
+# 2.28-a
+age_60_mass <- data[x == 60, ]
+ci <- t.test(age_60_mass)$conf.int
+cat("Confidence interval is [", ci[1], ", ", ci[2], "]", sep = "")
+```
+We are 95% confident that the mean of muscle mass of age 60 women is within this interval.
+
+# 2.28-b
+```{r}
+
+# 2.28-b
+```
+??
+
+# 2.29-a
+```{r}
+
+# 2.29-a
+```
+??
 
 # Appendix
 ```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
