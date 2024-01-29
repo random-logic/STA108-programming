@@ -17,7 +17,7 @@ var(residual)
 ```
 $\hat{\sigma}^2 = s^2 = 65.6686$
 
-# 2.6-a ?? hand calculations
+# 2.6-a ??! hand calculations
 ```{r}
 
 # 2.6-a
@@ -52,7 +52,7 @@ t_s <- (beta_1_hat - 0) / se_beta_1_hat
 cat("t =", critical_t_value)
 cat("t_s =", t_s)
 ```
-The null hypothesis is that there is no linear relationship ($\beta_1 = 0$). The alternate hypothesis is that there is a linear relationship ($\beta_1 \neq 0$). Since the test statistic ($t_s = 8.528029$) is greater than the critical t-value ($t = 2.2621$), we reject the null hypothesis. Therefore, there is a linear relationship. ?? P-value
+The null hypothesis is that there is no linear relationship ($\beta_1 = 0$). The alternate hypothesis is that there is a linear relationship ($\beta_1 \neq 0$). Since the test statistic ($t_s = 8.528029$) is greater than the critical t-value ($t = 2.2621$), we reject the null hypothesis. Therefore, there is a linear relationship. The p-value is 0.
 
 # 2.6-c
 ```{r}
@@ -73,7 +73,7 @@ t_s <- (beta_0_hat - 9) / se_beta_0_hat
 cat("t =", critical_t_value)
 cat("t_s =", t_s)
 ```
-The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\beta_0 \leq 9.0$). The alternate hypothesis is that the mean number of ampules does exceed 9.0 ($\beta_0 > 9.0$). Since the test statistic ($t_s = 2.727273$) is greater than the critical t-value ($2.2621$), we reject the null hypotehsis. Therefore, the mean number of ampules does exceed 9.0. Our degrees of freedom is 9. 
+The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\beta_0 \leq 9.0$). The alternate hypothesis is that the mean number of ampules does exceed 9.0 ($\beta_0 > 9.0$). Since the test statistic ($t_s = 2.727273$) is greater than the critical t-value ($2.2621$), we reject the null hypotehsis. Therefore, the mean number of ampules does exceed 9.0. Our degrees of freedom is 9. Our p-value is 0.025.
 
 # 2.6-e
 ??
@@ -82,24 +82,31 @@ The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\be
 ```{r}
 
 # 2.27-a
-alpha <- 0.05
-df <- 59
-result <- t.test(x, y)
-cv <- qt(alpha, df)
-
-cat("t =", cv)
-cat("t_s =", result$statistic)
-cat("p =", result$p.value)
-
-# Get regression summary
 summary_model <- summary(model)
 summary_model$coefficients["x", "Pr(>|t|)"]
 ```
 $\alpha = 0.05$
-<br> The null hypothesis is there is no negative correlation ($\beta_1 \geq 0$). The alternative hypothesis is there is a negative correlation ($\beta_1 < 0$). Using a left tail test where $\alpha = 0.05$, we reject the null hypotehsis when the p-value is less than alpha ($\rho < 0.05$), while we fail to reject the null when the p-value is greater than alpha ($\alpha > 0.05$). Our p-value is $4.123987e-19$, so we reject the null hypotehsis. Therefore, we conclude there is a negative correlation.
+<br> The null hypothesis is there is no negative correlation ($\beta_1 \geq 0$). The alternative hypothesis is there is a negative correlation ($\beta_1 < 0$). Using a left tail test where $\alpha = 0.05$, we reject the null hypotehsis when the p-value is less than alpha ($p < 0.05$), while we fail to reject the null when the p-value is greater than alpha ($\alpha > 0.05$). Our p-value is around 0, so we reject the null hypotehsis. Therefore, we conclude there is a negative correlation.
 
 # 2.27-b
-??
+No, because the linear model is too simple to catch all ages, it can only capture the age range in our dataset. Therefore, $\beta_0$ is not a good estimator for early ages. ??
+
+# 2.27-c
+```{r}
+
+# 2.27-c
+coef <- model$coefficients
+b0hat <- coef[1]
+b1hat <- coef[2]
+mse <- summary_model$sigma ** 2
+alpha <- 0.05
+p <- 1 - alpha / 2
+se_b1hat <- summary_model$coefficients["x", "Std. Error"]
+lb_b1hat <- b1hat - qt(p, df = n - 2) * se_b1hat
+ub_b1hat <- b1hat + qt(p, df = n - 2) * se_b1hat
+cat("Confidence Interval is [", lb_b1hat, ", ", ub_b1hat, "]", sep = "")
+```
+It is not necessary to know the ages to make the estimate because we are making an overall estimate, not an estimate at a specific age.
 
 # 2.28-a
 
