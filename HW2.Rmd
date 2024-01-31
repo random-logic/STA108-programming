@@ -78,7 +78,8 @@ cat("t_s =", t_s)
 The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\beta_0 \leq 9.0$). The alternate hypothesis is that the mean number of ampules does exceed 9.0 ($\beta_0 > 9.0$). Since the test statistic ($t_s = 1.809068$) is greater than the critical t-value ($2.306$), we accept the null hypotehsis. Therefore, the mean number of ampules does exceed 9.0. Our degrees of freedom is 9. Using the t-table, the p-value is approximately 0.05.
 
 # 2.6-e
-??
+$H_0: \beta_1 = 0: \delta = \frac{|2 - 0|}{.5} = 4, power = .93$
+<br> $H0: \beta_0 \leq 9: \delta = \frac{|11 - 9|}{.75} = 2.67, power = .78$
 
 # 2.27-a ?? t-test for means, not for correlation
 ```{r}
