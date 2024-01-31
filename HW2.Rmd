@@ -10,12 +10,13 @@ file_path <- "CH01PR27.txt"
 data <- read.table(file_path)
 y <- data$V1
 x <- data$V2
+n <- nrow(data)
 
 model <- lm(y ~ x, data = data)
 residual <- residuals(model)
-var(residual)
+sum(residual ** 2) / (n - 2)
 ```
-$\hat{\sigma}^2 = s^2 = 65.6686$
+$\hat{\sigma}^2 = s^2 = 66.8$
 
 # 2.6-a ??! hand calculations
 ```{r}
@@ -36,13 +37,14 @@ mse <- 1 / (n - 2) * sum((y_i - y_i_hat) ** 2)
 
 se_beta_1_hat <- sqrt(mse / sum((x_i - x_bar) ** 2))
 
-critical_t_value <- 2.2621
+# df = n - 2 because two restrictions
+critical_t_value <- 2.306
 
 confidence_lower_bound <- beta_1_hat - critical_t_value * se_beta_1_hat
 confidence_upper_bound <- beta_1_hat + critical_t_value * se_beta_1_hat
 cat("[", confidence_lower_bound, ", ", confidence_upper_bound, "]", sep = "")
 ```
-The 95% confidence interval for $\beta_1$ is [2.938981, 5.061019]. This means that we are 95% certain that $\beta_1 \in [2.938981, 5.061019]$.
+The 95% confidence interval for $\beta_1$ is [2.91839, 5.08161]. This means that we are 95% certain that $\beta_1 \in [2.91839, 5.08161]$.
 
 # 2.6-b
 ```{r}
@@ -52,19 +54,19 @@ t_s <- (beta_1_hat - 0) / se_beta_1_hat
 cat("t =", critical_t_value)
 cat("t_s =", t_s)
 ```
-The null hypothesis is that there is no linear relationship ($\beta_1 = 0$). The alternate hypothesis is that there is a linear relationship ($\beta_1 \neq 0$). Since the test statistic ($t_s = 8.528029$) is greater than the critical t-value ($t = 2.2621$), we reject the null hypothesis. Therefore, there is a linear relationship. The p-value is 0.
+The null hypothesis is that there is no linear relationship ($\beta_1 = 0$). The alternate hypothesis is that there is a linear relationship ($\beta_1 \neq 0$). Since the test statistic ($t_s = 8.528029$) is greater than the critical t-value ($t = 2.306$), we reject the null hypothesis. Therefore, there is a linear relationship. The p-value is 0.
 
 # 2.6-c
 ```{r}
 
 # 2.6-c
-se_beta_0_hat <- mse * (1 / n + x_bar ** 2 / sum((x_i - x_bar) ** 2))
+se_beta_0_hat <- sqrt(mse * (1 / n + x_bar ** 2 / sum((x_i - x_bar) ** 2)))
 
 confidence_lower_bound <- beta_0_hat - critical_t_value * se_beta_0_hat
 confidence_upper_bound <- beta_0_hat + critical_t_value * se_beta_0_hat
 cat("[", confidence_lower_bound, ", ", confidence_upper_bound, "]", sep = "")
 ```
-The 95% confidence interval for $\beta_0$ is [9.204676, 11.19532]. This means that we are 95% certain that $\beta_0 \in [9.204676, 11.19532]$.
+The 95% confidence interval for $\beta_0$ is [8.670373, 11.72963]. This means that we are 95% certain that $\beta_0 \in [8.670373, 11.72963]$.
 
 # 2.6-d
 ```{r}
@@ -73,7 +75,7 @@ t_s <- (beta_0_hat - 9) / se_beta_0_hat
 cat("t =", critical_t_value)
 cat("t_s =", t_s)
 ```
-The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\beta_0 \leq 9.0$). The alternate hypothesis is that the mean number of ampules does exceed 9.0 ($\beta_0 > 9.0$). Since the test statistic ($t_s = 2.727273$) is greater than the critical t-value ($2.2621$), we reject the null hypotehsis. Therefore, the mean number of ampules does exceed 9.0. Our degrees of freedom is 9. Our p-value is 0.025.
+The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\beta_0 \leq 9.0$). The alternate hypothesis is that the mean number of ampules does exceed 9.0 ($\beta_0 > 9.0$). Since the test statistic ($t_s = 1.809068$) is greater than the critical t-value ($2.306$), we accept the null hypotehsis. Therefore, the mean number of ampules does exceed 9.0. Our degrees of freedom is 9. Using the t-table, the p-value is approximately 0.05.
 
 # 2.6-e
 ??
