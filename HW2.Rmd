@@ -84,6 +84,13 @@ The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\be
 ```{r}
 
 # 2.27-a
+file_path <- "CH01PR27.txt"
+data <- read.table(file_path)
+y <- data$V1
+x <- data$V2
+n <- nrow(data)
+
+model <- lm(y ~ x, data = data)
 summary_model <- summary(model)
 summary_model$coefficients["x", "Pr(>|t|)"]
 ```
@@ -91,7 +98,7 @@ $\alpha = 0.05$
 <br> The null hypothesis is there is no negative correlation ($\beta_1 \geq 0$). The alternative hypothesis is there is a negative correlation ($\beta_1 < 0$). Using a left tail test where $\alpha = 0.05$, we reject the null hypotehsis when the p-value is less than alpha ($p < 0.05$), while we fail to reject the null when the p-value is greater than alpha ($\alpha > 0.05$). Our p-value is around 0, so we reject the null hypotehsis. Therefore, we conclude there is a negative correlation.
 
 # 2.27-b
-No, because the linear model is too simple to catch all ages, it can only capture the age range in our dataset. Therefore, $\beta_0$ is not a good estimator for early ages. ??
+No, because the linear model is too simple to catch all ages, it can only capture the age range in our dataset (it does not capture any women age less than 40 or women of age 0). Therefore, $\beta_0$ is not a good estimator for early ages.
 
 # 2.27-c
 ```{r}
