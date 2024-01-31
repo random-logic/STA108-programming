@@ -1,0 +1,114 @@
+```{r echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 2.6-a ??! hand calculations
+```{r}
+
+# 2.6-a
+n <- 10
+x_i <- c(1, 0, 2, 0, 3, 1, 0, 1, 2, 0)
+y_i <- c(16, 9, 17, 12, 22, 13, 8, 15, 19, 11)
+
+x_bar <- mean(x_i)
+y_bar <- mean(y_i)
+
+beta_1_hat <- sum((x_i - x_bar) * (y_i - y_bar)) / sum((x_i - x_bar) ** 2)
+beta_0_hat <- y_bar - beta_1_hat * x_bar
+y_i_hat <- beta_0_hat + beta_1_hat * x_i
+
+mse <- 1 / (n - 2) * sum((y_i - y_i_hat) ** 2)
+
+se_beta_1_hat <- sqrt(mse / sum((x_i - x_bar) ** 2))
+
+# df = n - 2 because two restrictions
+critical_t_value <- 2.306
+
+confidence_lower_bound <- beta_1_hat - critical_t_value * se_beta_1_hat
+confidence_upper_bound <- beta_1_hat + critical_t_value * se_beta_1_hat
+cat("[", confidence_lower_bound, ", ", confidence_upper_bound, "]", sep = "")
+```
+The 95% confidence interval for $\beta_1$ is [2.91839, 5.08161]. This means that we are 95% certain that $\beta_1 \in [2.91839, 5.08161]$.
+
+# 2.6-b
+```{r}
+
+# 2.6-b
+t_s <- (beta_1_hat - 0) / se_beta_1_hat
+cat("t =", critical_t_value)
+cat("t_s =", t_s)
+```
+The null hypothesis is that there is no linear relationship ($\beta_1 = 0$). The alternate hypothesis is that there is a linear relationship ($\beta_1 \neq 0$). Since the test statistic ($t_s = 8.528029$) is greater than the critical t-value ($t = 2.306$), we reject the null hypothesis. Therefore, there is a linear relationship. The p-value is 0.
+
+# 2.6-c
+```{r}
+
+# 2.6-c
+se_beta_0_hat <- sqrt(mse * (1 / n + x_bar ** 2 / sum((x_i - x_bar) ** 2)))
+
+confidence_lower_bound <- beta_0_hat - critical_t_value * se_beta_0_hat
+confidence_upper_bound <- beta_0_hat + critical_t_value * se_beta_0_hat
+cat("[", confidence_lower_bound, ", ", confidence_upper_bound, "]", sep = "")
+```
+The 95% confidence interval for $\beta_0$ is [8.670373, 11.72963]. This means that we are 95% certain that $\beta_0 \in [8.670373, 11.72963]$.
+
+# 2.6-d
+```{r}
+t <- 2.2621
+t_s <- (beta_0_hat - 9) / se_beta_0_hat
+cat("t =", critical_t_value)
+cat("t_s =", t_s)
+```
+The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\beta_0 \leq 9.0$). The alternate hypothesis is that the mean number of ampules does exceed 9.0 ($\beta_0 > 9.0$). Since the test statistic ($t_s = 1.809068$) is greater than the critical t-value ($2.306$), we accept the null hypotehsis. Therefore, the mean number of ampules does exceed 9.0. Our degrees of freedom is 9. Using the t-table, the p-value is approximately 0.05.
+
+# 2.6-e
+$H_0: \beta_1 = 0: \delta = \frac{|2 - 0|}{.5} = 4, power = .93$
+<br> $H0: \beta_0 \leq 9: \delta = \frac{|11 - 9|}{.75} = 2.67, power = .78$
+
+# 2.27-a
+```{r}
+
+# 2.27-a
+file_path <- "CH01PR27.txt"
+data <- read.table(file_path)
+y <- data$V1
+x <- data$V2
+n <- nrow(data)
+
+model <- lm(y ~ x, data = data)
+summary_model <- summary(model)
+summary_model$coefficients["x", "Pr(>|t|)"]
+```
+$\alpha = 0.05$
+<br> The null hypothesis is there is no negative correlation ($\beta_1 \geq 0$). The alternative hypothesis is there is a negative correlation ($\beta_1 < 0$). Using a left tail test where $\alpha = 0.05$, we reject the null hypotehsis when the p-value is less than alpha ($p < 0.05$), while we fail to reject the null when the p-value is greater than alpha ($\alpha > 0.05$). Our p-value is around 0, so we reject the null hypotehsis. Therefore, we conclude there is a negative correlation.
+
+# 2.27-b
+No, because the linear model is too simple to catch all ages, it can only capture the age range in our dataset (it does not capture any women age less than 40 or women of age 0). Therefore, $\beta_0$ is not a good estimator for early ages.
+
+# 2.27-c
+```{r}
+
+# 2.27-c
+coef <- model$coefficients
+b0hat <- coef[1]
+b1hat <- coef[2]
+mse <- summary_model$sigma ** 2
+alpha <- 0.05
+p <- 1 - alpha / 2
+se_b1hat <- summary_model$coefficients["x", "Std. Error"]
+lb_b1hat <- b1hat - qt(p, df = n - 2) * se_b1hat
+ub_b1hat <- b1hat + qt(p, df = n - 2) * se_b1hat
+cat("Confidence Interval is [", lb_b1hat, ", ", ub_b1hat, "]", sep = "")
+```
+It is not necessary to know the ages to make the estimate because we are making an overall estimate, not an estimate at a specific age.
+
+# 2.29-a
+```{r}
+
+# 2.29-a
+```
+??
+
+# Appendix
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
