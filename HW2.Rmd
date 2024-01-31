@@ -81,7 +81,7 @@ The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\be
 $H_0: \beta_1 = 0: \delta = \frac{|2 - 0|}{.5} = 4, power = .93$
 <br> $H0: \beta_0 \leq 9: \delta = \frac{|11 - 9|}{.75} = 2.67, power = .78$
 
-# 2.27-a ?? t-test for means, not for correlation
+# 2.27-a
 ```{r}
 
 # 2.27-a
@@ -122,9 +122,19 @@ It is not necessary to know the ages to make the estimate because we are making 
 ```{r}
 
 # 2.28-a
-age_60_mass <- data[x == 60, ]
-ci <- t.test(age_60_mass)$conf.int
-cat("Confidence interval is [", ci[1], ", ", ci[2], "]", sep = "")
+beta <- coefficients(model)
+beta_0 <- beta[1]
+beta_1 <- beta[2]
+x_h <- 60
+x_bar <- mean(x)
+
+y_hat_h <- beta_0 + beta_1 * x_h
+se_y_hat_h <- sqrt(mse * (1 / n + (x_h - x_bar) ** 2 / sum((x - x_bar) ** 2)))
+t_value <- qt(0.975, df = 58)
+
+lower_bound <- y_hat_h - t_value * se_y_hat_h
+upper_bound <- y_hat_h + t_value * se_y_hat_h
+cat("[", lower_bound, ", ", upper_bound, "]", sep = "")
 ```
 We are 95% confident that the mean of muscle mass of age 60 women is within this interval.
 
@@ -132,8 +142,13 @@ We are 95% confident that the mean of muscle mass of age 60 women is within this
 ```{r}
 
 # 2.28-b
+s_Y_h_new <- sqrt(mse * (1 + 1 / n + (x_h - x_bar) ** 2 / sum((x - x_bar) ** 2)))
+lower_bound <- y_hat_h - t_value * s_Y_h_new
+upper_bound <- y_hat_h + t_value * s_Y_h_new
+
+cat("[", lower_bound, ", ", upper_bound, "]", sep = "")
 ```
-??
+The prediction interval should be precise because it tell us where we expect the individual values to land. However, the range is large. ??
 
 # 2.29-a
 ```{r}
