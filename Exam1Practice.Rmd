@@ -1,0 +1,40 @@
+```{r}
+# page 1
+x_i <- c(43, 39, 41, 86, 72, 76)
+y_i <- c(106, 106, 97, 60, 70, 80)
+n <- 6
+
+x_bar <- mean(x_i)
+y_bar <- mean(y_i)
+
+b_1 <- sum((y_i - y_bar) * (x_i - x_bar)) / sum((x_i - x_bar) ** 2)
+b_0 <- y_bar - b_1 * x_bar
+
+y_hat_i <- b_0 + b_1 * x_i
+
+mse <- sum((y_i - y_hat_i) ** 2) / (n - 2)
+
+var_b_0 <- mse * (1 / n + x_bar ** 2 / sum((x_i - x_bar) ** 2))
+var_b_0
+
+# page 2
+t_critical <- 2.131847
+ci_lower <- b_0 - t_critical * sqrt(var_b_0)
+ci_upper <- b_0 + t_critical * sqrt(var_b_0)
+cat("[", ci_lower, ", ", ci_upper, "]", sep = "")
+
+# page 3
+t_star <- b_0 / sqrt(var_b_0)
+t_star
+
+# page 4
+x_h <- 30
+t_critical <- 2.131847
+
+var_y_hat_h <- mse * (1 / n + (x_h - x_bar) ** 2 / sum((x_i - x_bar) ** 2))
+
+y_hat_h <- b_0 + b_1 * x_h
+ci_lower <- y_hat_h - t_critical * sqrt(var_y_hat_h)
+ci_upper <- y_hat_h + t_critical * sqrt(var_y_hat_h)
+cat("[", ci_lower, ", ", ci_upper, "]", sep = "")
+```
