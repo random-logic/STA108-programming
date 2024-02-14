@@ -1,0 +1,45 @@
+```{r}
+x <- c(16, 16, 16, 16, 24, 24, 24, 24, 32, 32, 32, 32, 40, 40, 40, 40)
+y <- c(199, 205, 196, 200, 218, 220, 215, 223, 237, 234, 235, 230, 250, 248, 253, 246)
+
+x.n <- length(x)
+
+y.b <- mean(y)
+x.b <- mean(x)
+
+n <- sum((x - x.b) * y)
+d <- sum((x - x.b) ** 2)
+
+b1 <- n / d
+b0 <- y.b - x.b * b1
+
+y_fitted <- b0 + b1 * x
+
+residual <- y - y_fitted
+
+mse <- sum(residual ** 2) / (x.n - 2)
+
+s_b1_squared <- mse / d
+
+t1 <- b1 / sqrt(s_b1_squared)
+
+p <- (1 - pt(t1, x.n - 2, ncp = 0)) * 2
+
+# Fit linear regression model
+model <- lm(y ~ x)
+
+# Obtain summary statistics
+summary(model)
+```
+
+The $y$ values are `r y`.
+
+The $x$ values are `r x`.
+
+Our $y$ fitted values are `r y_fitted`.
+
+Given $\alpha$, if the $p$ value is smaller than $\alpha$ (type I error), we reject the null hypothesis.
+
+The $p$ value is $`r p`$.
+
+## Note: on the quiz, we have to explain what we did
