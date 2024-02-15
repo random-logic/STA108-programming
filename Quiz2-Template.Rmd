@@ -34,34 +34,43 @@ residual <- y - y_fitted
 mse <- sum(residual ** 2) / (x.n - 2)
 
 # find the variance of b1
-s_b1_squared <- mse / d
+s_squared_b1 <- mse / d
 
 # find the t-statistic of b1
-t1 <- b1 / sqrt(s_b1_squared)
+t1 <- b1 / sqrt(s_squared_b1)
 
 # find the p-value of the t-statistic
 p <- (1 - pt(t1, x.n - 2, ncp = 0)) * 2
 
-# Fit linear regression model
-model <- lm(y ~ x)
-
-# Format a table for nice printing
+# format a table for nice printing
 df <- data.frame(y = y, x = y)
-df[[`$\\hat y$`]] <- y_fitted
-
-# Obtain summary statistics
-summary <- summary(model)
+df[["$\\hat y$"]] <- y_fitted
+df[["$e_i$"]] <- residual
 ```
 
-knitr::kable(data.frame(y = y, x = x, `y_hat` = y_fitted), format = "markdown")
+`r knitr::kable(df, format = "markdown")`
 
-Our $y$ fitted values are `r y_fitted`.
+$n = `r x.n`$
 
-Given $\alpha$, if the $p$ value is smaller than $\alpha$ (type I error), we reject the null hypothesis.
+$\bar y = `r round(y.b, 4)`$
 
-The $p$ value is $`r p`$.
+$\bar x = `r round(x.b, 4)`$
 
-## Note: on the quiz, we have to explain what we did
+$b_1 = `r round(b1, 4)`$
+
+$b_0 = `r round(b0, 4)`$
+
+$MSE = `r round(mse, 4)`$
+
+$s^2(b_1) = `r round(s_squared_b1, 4)`$
+
+$t_1 = `r round(t1, 4)`$
+
+$p = `r round(p, 4)`$
+
+Given $\alpha = 0.01$ (type I error), the decision rule is that if the $p$ value is smaller than $\alpha$, we reject the null hypothesis. Otherwise, we fail to reject the null hypothesis.
+
+Since $p < \alpha$, we reject the null hypothesis. Therefore, $\beta_1 \neq 0$.
 
 # Appendix
 ```{r ref.label=knitr::all_labels()[!grepl("noEcho", knitr::all_labels())], echo=TRUE, eval=FALSE}
