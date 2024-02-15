@@ -1,8 +1,12 @@
+---
+title: "Quiz 2"
+author: "Andrew Jowe"
+---
+
 ```{r label="noEcho", echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-# Quiz 2
 ```{r}
 # plug in data
 x <- c(16, 16, 16, 16, 24, 24, 24, 24, 32, 32, 32, 32, 40, 40, 40, 40)
@@ -43,12 +47,13 @@ t1 <- b1 / sqrt(s_squared_b1)
 p <- (1 - pt(t1, x.n - 2, ncp = 0)) * 2
 
 # format a table for nice printing
-df <- data.frame(y = y, x = y)
+df <- data.frame(x = x, y = y)
 df[["$\\hat y$"]] <- y_fitted
 df[["$e_i$"]] <- residual
+markdown_table <- knitr::kable(df, format = "markdown")
 ```
 
-`r knitr::kable(df, format = "markdown")`
+`r markdown_table`
 
 $n = `r x.n`$
 
@@ -72,6 +77,7 @@ Given $\alpha = 0.01$ (type I error), the decision rule is that if the $p$ value
 
 Since $p < \alpha$, we reject the null hypothesis. Therefore, $\beta_1 \neq 0$.
 
+\newpage
 # Appendix
 ```{r ref.label=knitr::all_labels()[!grepl("noEcho", knitr::all_labels())], echo=TRUE, eval=FALSE}
 ```
