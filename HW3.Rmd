@@ -117,8 +117,32 @@ It is not necessary to know the ages to make the estimate because we are making 
 ```{r}
 
 # 2.29-b
+data <- read.table("CH01PR27.txt")
+y <- data$V1
+x <- data$V2
+model <- lm(y ~ x, data = data)
+anova_result <- anova(model)
+anova_result
 ```
-??
+
+# 2.29-d
+```{r}
+sse <- anova_result$"Sum Sq"[length(anova_result$"Sum Sq")]
+ssto <- sum(anova_result$"Sum Sq")
+proportion <- sse / ssto
+```
+
+Proportion is $`r proportion`$, which is relatively small.
+
+# 2.29-e
+```{r}
+big_r_squared <- (ssto - sse) / ssto
+little_r <- cor(x, y)
+```
+
+$R^2 = `r big_r_squared`$
+
+$r = `r little_r`$
 
 # Appendix
 ```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
