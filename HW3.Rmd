@@ -65,6 +65,17 @@ The null hypothesis is that the mean number of ampules does not exceed 9.0 ($\be
 $H_0: \beta_1 = 0: \delta = \frac{|2 - 0|}{.5} = 4, power = .93$
 <br> $H0: \beta_0 \leq 9: \delta = \frac{|11 - 9|}{.75} = 2.67, power = .78$
 
+# 2.9
+The variance of $\hat Y_h$ is not given because the table is analyzing the variance of the regression parameters ($b_0$ and $b_1$), not analyzing the variance of predictors $\hat Y_h$.
+
+# 2.10
+a. A prediction interval is appropriate because we are trying to predict what the temperature will be the next day.
+b. Confidence interval is appropriate because we are trying to estimate the average of families based on previous data.
+c. A predication interval is appropriate because we are trying to figure out how much electricity will be consumed the next month.
+
+# 2.12
+Yes, the variance of pred can be brought closer to 0 as we have more samples because with more samples our overall prediction is usually more precise. This is not the case for the variance of $\hat Y_h$ because it is only one point in our data and one of the terms in this equation has $\frac{1}{n}$.
+
 # 2.27-a
 ```{r}
 
@@ -102,10 +113,10 @@ cat("Confidence Interval is [", lb_b1hat, ", ", ub_b1hat, "]", sep = "")
 ```
 It is not necessary to know the ages to make the estimate because we are making an overall estimate, not an estimate at a specific age.
 
-# 2.29-a
+# 2.29-b
 ```{r}
 
-# 2.29-a
+# 2.29-b
 ```
 ??
 
