@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-# 2.6-a ??! hand calculations
+# 2.6-a
 ```{r}
 
 # 2.6-a
@@ -26,9 +26,44 @@ critical_t_value <- 2.306
 
 confidence_lower_bound <- beta_1_hat - critical_t_value * se_beta_1_hat
 confidence_upper_bound <- beta_1_hat + critical_t_value * se_beta_1_hat
-cat("[", confidence_lower_bound, ", ", confidence_upper_bound, "]", sep = "")
+
+nicely_formatted_table <- data.frame(Observation = 1:n)
+nicely_formatted_table[["$x_i$"]] <- x_i
+nicely_formatted_table[["$y_i$"]] <- y_i
+nicely_formatted_table[["$x_i - \\bar x$"]] <- x_i - x_bar
+nicely_formatted_table[["$(x_i - \\bar x)^2$"]] <- (x_i - x_bar) ** 2
+nicely_formatted_table[["$y_i - \\bar y$"]] <- y_i - y_bar
+nicely_formatted_table[["$\\hat y_i$"]] <- y_i_hat
+nicely_formatted_table[["$(y_i - \\hat y_i)^2$"]] <- (y_i - y_i_hat) ** 2
 ```
-The 95% confidence interval for $\beta_1$ is [2.91839, 5.08161]. This means that we are 95% certain that $\beta_1 \in [2.91839, 5.08161]$.
+
+`r knitr::kable(nicely_formatted_table, format = "markdown")`
+
+$\bar x = \frac{1}{n} \sum x_i = \frac{1}{`r n`} * (`r paste(x_i, collapse = " + ")`)$ = $`r x_bar`$
+
+$\bar y = \frac{1}{n} \sum y_i = \frac{1}{`r n`} * (`r paste(y_i, collapse = " + ")`)$ = $`r y_bar`$
+
+$\hat\beta_1 = \frac{\sum(x_i - \bar x)(y_i - \bar y)}{\sum(x_i - \bar x)^2} = \frac{`r paste((x_i - x_bar) * (y_i - y_bar), collapse = " + ")`}{`r paste((x_i - x_bar) ** 2, collapse = " + ")`} = `r beta_1_hat`$
+
+$\hat\beta_0 = \bar y - \hat\beta_1 * \bar x = `r y_bar` - `r beta_1_hat` * `r x_bar` = `r beta_0_hat`$
+
+$\hat y_i = \hat\beta_0 + \hat\beta_1 * x_i$ (See table for computations)
+
+$MSE = \frac{1}{n - 2} * \sum (y_i - \hat y_i)^2$
+
+$MSE = \frac{1}{`r n` - 2} * (`r paste(round((y_i - y_i_hat) ** 2, 2), collapse = " + ")`)$
+
+$MSE = `r mse`$
+
+$se(\hat\beta_1) = \sqrt \frac{MSE}{\sum(x_i - \bar x)^2} = \sqrt \frac{`r mse`}{`r paste((x_i - x_bar) ** 2, collapse = " + ")`} = `r se_beta_1_hat`$
+
+$t^* = `r critical_t_value`$
+
+$CI \in \hat\beta_1 \pm t^* * se(\hat \beta_1) = `r beta_1_hat` \pm `r critical_t_value` * `r se_beta_1_hat`$
+
+$CI \in [`r confidence_lower_bound`, `r confidence_upper_bound`]$
+
+The 95% confidence interval for $\beta_1$ is $[`r confidence_lower_bound`, `r confidence_upper_bound`]$. This means that we are 95% certain that $\beta_1 \in [`r confidence_lower_bound`, `r confidence_upper_bound`]$.
 
 # 2.6-b
 ```{r}
