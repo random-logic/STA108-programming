@@ -1,0 +1,103 @@
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# 3.2
+```{r 3.2}
+# Case 1: Error variance decreases with X
+# Generate synthetic data ?? wrong
+set.seed(123)
+X1 <- seq(1, 10, length.out = 100)
+Y1 <- 2*X1 + rnorm(100, mean = 0, sd = X1^0.5) # Error variance decreases with X
+
+# Fit linear regression model
+model1 <- lm(Y1 ~ X1)
+
+# Residuals for Case 1
+residuals1 <- resid(model1)
+
+# Plot residual vs. fitted values
+plot(fitted(model1), residuals1, xlab = "Fitted values", ylab = "Residuals",
+     main = "Residual Plot: Error Variance Decreases with X")
+
+# Add a horizontal line at y = 0 for reference
+abline(h = 0, col = "red")
+
+# Case 2: True regression function is U shaped
+# but a linear regression function is fitted
+# Generate synthetic data
+X2 <- seq(-5, 5, length.out = 100)
+# True regression function is U shaped
+Y2 <- 2*X2^2 + rnorm(100, mean = 0, sd = 3)
+
+# Fit linear regression model
+model2 <- lm(Y2 ~ X2)
+
+# Residuals for Case 2
+residuals2 <- resid(model2)
+
+# Plot residual vs. fitted values
+plot(fitted(model2), residuals2, xlab = "Fitted values", ylab = "Residuals",
+     main = "Residual Plot: True Regression Function is U shaped")
+
+# Add a horizontal line at y = 0 for reference
+abline(h = 0, col = "red")
+```
+
+# 3.9
+```{r 3.9}
+# Provided data
+x_i <- c(2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
+e_i <- c(3.2, 2.9, -1.7, -2.0, -2.3, -1.2, -0.9, 0.8, 0.7, 0.5)
+
+# Fit linear regression model
+model <- lm(e_i ~ x_i)
+
+# Get residuals
+residuals <- resid(model)
+
+# Plot residuals against Xi
+plot(x_i, residuals, xlab = "Number of rooms in the home (Xi)",
+     ylab = "Residuals (ei)",
+     main = "Residual Plot: Household Electricity Consumption")
+
+# Add a horizontal line at y = 0 for reference
+abline(h = 0, col = "red")
+```
+
+Based on the plot, there does not seem to be a linear relationship between the datapoints. A transformation might alleviate the problem, as it can linearize non-linear relationships.
+
+# 3.19
+This difference can arise because ??
+
+# 3.20
+The transformation $X' = 1 / X$ maintains a linear regression relationship, so the error terms are still independent and $\epsilon_{ij} \sim N(0, \sigma^2)$. However, the same does not hold after the transformation $Y' = 1 / Y$, as this transformation modifies the error values.
+
+# 3.23
+The full model is $Y_{ij} = \mu_j + \epsilon_{ij}$
+
+$df_F = n - c = 20 - 10 = 10$
+
+The reduced model is $Y_{ij} = \beta_1 x_j + \epsilon_{ij}$
+
+$df_R = n - 1 = 20 - 1 = 19$
+
+# Appendix
+```{r appendix, results="asis"}
+# Get all the labels
+all_labels <- knitr::all_labels()
+
+# Print out code along with labels
+for (label in all_labels) {
+  if (label == "setup" || label == "appendix") {
+    next
+  }
+
+  code <- knitr::knit_code$get(label)
+
+  cat("##", label, "\n")
+  cat("```r \n")
+  cat(code, sep = "\n")
+  cat("```\n")
+}
+```
