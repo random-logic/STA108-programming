@@ -5,22 +5,20 @@ knitr::opts_chunk$set(echo = FALSE)
 # 3.2
 ```{r 3.2}
 # Case 1: Error variance decreases with X
-# Generate synthetic data ?? wrong
+# Generate synthetic data
 set.seed(123)
-X1 <- seq(1, 10, length.out = 100)
-Y1 <- 2*X1 + rnorm(100, mean = 0, sd = X1^0.5) # Error variance decreases with X
+X <- seq(0, 10, length.out = 100)
+Y <- 2*X + rnorm(100, mean = 0, sd = 1 - X/10)  # Decreasing error variance
 
 # Fit linear regression model
-model1 <- lm(Y1 ~ X1)
+model <- lm(Y ~ X)
 
-# Residuals for Case 1
-residuals1 <- resid(model1)
+# Get residuals
+residuals <- residuals(model)
 
-# Plot residual vs. fitted values
-plot(fitted(model1), residuals1, xlab = "Fitted values", ylab = "Residuals",
-     main = "Residual Plot: Error Variance Decreases with X")
-
-# Add a horizontal line at y = 0 for reference
+# Plot residuals against X
+plot(X, residuals, main = "Residual Plot: Error Variance Decreases with X",
+     xlab = "X", ylab = "Residuals")
 abline(h = 0, col = "red")
 
 # Case 2: True regression function is U shaped
@@ -74,7 +72,7 @@ production_data <- read.table("CH03PR18.txt")
 colnames(production_data) <- c("Y", "X")
 ```
 
-a. A linear relationship does appear adequate because it looks like there is a positive linear correlation. We would like to do a transformation on X to not mess up the positive linear correlation. ??
+a. A linear relationship on the original data is not adequate because the relationship does not look linear but rather square root. We would like to do a transformation on X so that $\epsilon_{ij}$ is still normally distributed afterwards.
 ```{r 3.18-a}
 # Do plot
 plot(production_data$X, production_data$Y,
@@ -197,7 +195,7 @@ lower <- min(predicted_y)
 upper <- max(predicted_y)
 ```
 
-c. $\hat{Y_i}(x = 12) \in [`r round(lower, 4)`, `r round(upper, 4)`]$
+c. $\hat{Y_i}(x_i = 12) \in [`r round(lower, 4)`, `r round(upper, 4)`]$
 
    The observation $Y_7$ falls outside of the prediction interval. This means that $Y_7$ is an outlier.
 
