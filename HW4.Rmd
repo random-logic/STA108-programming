@@ -67,6 +67,68 @@ abline(h = 0, col = "red")
 
 Based on the plot, there does not seem to be a linear relationship between the datapoints. A transformation might alleviate the problem, as it can linearize non-linear relationships.
 
+# 3.18
+```{r 3.18}
+# Read the txt file into a dataframe
+production_data <- read.table("CH03PR18.txt")
+colnames(production_data) <- c("Y", "X")
+```
+
+a. A linear relationship does appear adequate because it looks like there is a positive linear correlation. We would like to do a transformation on X to not mess up the positive linear correlation. ??
+```{r 3.18-a}
+# Do plot
+plot(production_data$X, production_data$Y,
+     xlab = "Production Lot Size",
+     ylab = "Production Time (hours)",
+     main = "Scatter Plot of Production Data")
+```
+
+```{r 3.18-b}
+# Transform the data
+transformed_X <- sqrt(production_data$X)
+
+# Perform linear regression on the transformed data
+lm_result <- lm(production_data$Y ~ transformed_X)
+
+# Extract estimated coefficients
+intercept <- coef(lm_result)[1]
+coef_sqrtX <- coef(lm_result)[2]
+```
+
+b. $\hat{Y_i} = `r round(intercept, 4)` + `r round(coef_sqrtX, 4)` x_i'$
+
+c. The regression line appears to be a good fit of the transformed data.
+```{r 3.18-c}
+# Plot the transformed data
+plot(sqrt(production_data$X), production_data$Y, 
+     xlab = "Transformed Production Lot Size (sqrt(X))", 
+     ylab = "Production Time (hours)",
+     main = "Scatter Plot of Transformed Production Data")
+
+# Add the estimated regression line
+abline(lm_result, col = "red")
+```
+
+d. My plots show that there is constant variance (because the dots in the residuals plot are spread out approximately equally for different fitted values) and the distribution is normal (because the dots in the normality plot conform to the line).
+```{r 3.18-d}
+# Obtain the residuals
+residuals <- resid(lm_result)
+
+# Plot residuals against fitted values
+plot(fitted(lm_result), residuals,
+     xlab = "Fitted values", ylab = "Residuals",
+     main = "Residuals vs Fitted Values")
+
+# Add a horizontal line at y = 0
+abline(h = 0, col = "red")
+
+# Prepare a normal probability plot
+qqnorm(residuals, main = "Normal Probability Plot of Residuals")
+qqline(residuals)
+```
+
+e. $\hat{Y_i} = `r round(intercept, 4)` + `r round(coef_sqrtX, 4)` \sqrt{x_i}$
+
 # 3.19
 This difference can arise because ??
 
