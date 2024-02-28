@@ -145,11 +145,61 @@ The reduced model is $Y_{ij} = \beta_1 x_j + \epsilon_{ij}$
 $df_R = n - 1 = 20 - 1 = 19$
 
 # 3.24
-```{r 3.24}
+```{r 3.24-a1}
+# Get all the data
 x <- c(5, 8, 11, 7, 13, 12, 12, 6)
 y <- c(63, 67, 74, 64, 75, 69, 90, 60)
+
+# Fit a linear regression model
+model <- lm(y ~ x)
+
+# Extract coefficients
+intercept <- coef(model)[1]
+slope <- coef(model)[2]
 ```
-??
+a. $\hat{Y_i} = `r round(intercept, 4)` + `r round(slope, 4)` x_i$
+
+   The residual plot shows that there is an outlier at $12$. Most residuals lie between $\pm 5$, but this outlier is beyond $10$.
+```{r 3.24-a2}
+# Calculate residuals
+residuals <- resid(model)
+
+# Plot residuals against Xi
+plot(x, residuals, xlab = "X", ylab = "Residuals", main = "Residual Plot")
+abline(h = 0, col = "red")  # Add a horizontal line at 0
+```
+
+```{r 3.24-b}
+# Omit case 7
+x <- c(5, 8, 11, 7, 13, 12, 6)
+y <- c(63, 67, 74, 64, 75, 69, 60)
+
+# Fit a linear regression model
+model <- lm(y ~ x)
+
+# Extract coefficients
+intercept <- coef(model)[1]
+slope <- coef(model)[2]
+```
+
+b. $\hat{Y_i} = `r round(intercept, 4)` + `r round(slope, 4)` x_i$
+
+   We can conclude that this outlier had a huge effect on the estimated coefficients of our model.
+
+```{r 3.24-c}
+# Predict Y for a new observation at X = 12
+new_x <- 12
+predicted_y <- predict(model, newdata = data.frame(x = new_x),
+                       interval = "prediction", level = 0.99)
+
+# Get prediction interval
+lower <- min(predicted_y)
+upper <- max(predicted_y)
+```
+
+c. $\hat{Y_i}(x = 12) \in [`r round(lower, 4)`, `r round(upper, 4)`]$
+
+   The observation $Y_7$ falls outside of the prediction interval. This means that $Y_7$ is an outlier.
 
 # Appendix
 ```{r appendix, results="asis"}
