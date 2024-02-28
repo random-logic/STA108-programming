@@ -144,6 +144,12 @@ The reduced model is $Y_{ij} = \beta_1 x_j + \epsilon_{ij}$
 
 $df_R = n - 1 = 20 - 1 = 19$
 
+# 3.24
+```{r 3.24}
+x <- c(5, 8, 11, 7, 13, 12, 12, 6)
+y <- c(63, 67, 74, 64, 75, 69, 90, 60)
+```
+
 # Appendix
 ```{r appendix, results="asis"}
 # Get all the labels
