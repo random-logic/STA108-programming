@@ -131,7 +131,7 @@ qqline(residuals)
 e. $\hat{Y_i} = `r round(intercept, 4)` + `r round(coef_sqrtX, 4)` \sqrt{x_i}$
 
 # 3.19
-This difference can arise because $\hat{Y_i} = b_0 + b_1 x_i$ does not depend on $\epsilon_i$, while $Y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ depends on $\epsilon_i$. The residual is dependent on $\epsilon_i$. The plot with residual against $Y_i$ is more meaningful and useful for making interpretations.
+This difference can arise because $\hat{Y_i} = b_0 + b_1 x_i$ does not depend on $\epsilon_i$ as it is the predictor, while $Y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ depends on $\epsilon_i$. The residual is dependent on $\epsilon_i$, as this represents the variance. The plot with residual against $Y_i$ is more meaningful and useful for making interpretations.
 
 # 3.20
 The transformation $X' = 1 / X$ maintains a linear regression relationship, so the error terms are still independent and $\epsilon_{ij} \sim N(0, \sigma^2)$. However, the same does not hold after the transformation $Y' = 1 / Y$, as this transformation modifies the error values.
