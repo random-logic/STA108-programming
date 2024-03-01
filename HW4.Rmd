@@ -43,6 +43,8 @@ abline(h = 0, col = "red")
 ```
 
 # 3.9
+Based on the plot, there does not seem to be a linear relationship between the datapoints. A transformation might alleviate the problem, as it can linearize non-linear relationships.
+
 ```{r 3.9}
 # Provided data
 x_i <- c(2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
@@ -63,8 +65,6 @@ plot(x_i, residuals, xlab = "Number of rooms in the home (Xi)",
 abline(h = 0, col = "red")
 ```
 
-Based on the plot, there does not seem to be a linear relationship between the datapoints. A transformation might alleviate the problem, as it can linearize non-linear relationships.
-
 # 3.18
 ```{r 3.18}
 # Read the txt file into a dataframe
@@ -73,6 +73,7 @@ colnames(production_data) <- c("Y", "X")
 ```
 
 a. A linear relationship on the original data is not adequate because the relationship does not look linear but rather square root. We would like to do a transformation on X so that $\epsilon_{ij}$ is still normally distributed afterwards.
+
 ```{r 3.18-a}
 # Do plot
 plot(production_data$X, production_data$Y,
@@ -96,6 +97,7 @@ coef_sqrtX <- coef(lm_result)[2]
 b. $\hat{Y_i} = `r round(intercept, 4)` + `r round(coef_sqrtX, 4)` x_i'$
 
 c. The regression line appears to be a good fit of the transformed data.
+
 ```{r 3.18-c}
 # Plot the transformed data
 plot(sqrt(production_data$X), production_data$Y, 
@@ -108,6 +110,7 @@ abline(lm_result, col = "red")
 ```
 
 d. My plots show that there is constant variance (because the dots in the residuals plot are spread out approximately equally for different fitted values) and the distribution is normal (because the dots in the normality plot conform to the line).
+
 ```{r 3.18-d}
 # Obtain the residuals
 residuals <- resid(lm_result)
@@ -158,6 +161,7 @@ slope <- coef(model)[2]
 a. $\hat{Y_i} = `r round(intercept, 4)` + `r round(slope, 4)` x_i$
 
    The residual plot shows that there is an outlier at $12$. Most residuals lie between $\pm 5$, but this outlier is beyond $10$.
+
 ```{r 3.24-a2}
 # Calculate residuals
 residuals <- resid(model)
