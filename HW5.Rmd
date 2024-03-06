@@ -1,0 +1,89 @@
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r Functions}
+r_matrix_to_mathjax <- function(mat) {
+  nrow <- dim(mat)[1]
+  ncol <- dim(mat)[2]
+
+  result <- "\\begin{bmatrix}"
+  for (i in 1:nrow) {
+    result <- paste(result, "", paste(mat[i, ], collapse = "&"), "\\\\")
+  }
+  result <- paste(result, "\\end{bmatrix}")
+
+  return(result)
+}
+```
+
+# 5.1
+```{r 5.1}
+A <- matrix(c(1, 4, 2, 6, 3, 8), nrow = 3, ncol = 2, byrow = TRUE)
+B <- matrix(c(1, 3, 1, 4, 2, 5), nrow = 3, ncol = 2, byrow = TRUE)
+C <- matrix(c(3, 8, 1, 5, 4, 0), nrow = 2, ncol = 3, byrow = TRUE)
+
+# r_matrix_to_mathjax(A+B)
+# r_matrix_to_mathjax(A-B)
+# r_matrix_to_mathjax(A%*%C)
+# r_matrix_to_mathjax(A%*%t(B))
+# r_matrix_to_mathjax(t(B)%*%A)
+```
+
+- $A + B = `r r_matrix_to_mathjax(A+B)`$ is a matrix of $3 \times 2$
+- $A - B = `r r_matrix_to_mathjax(A-B)`$ is a matrix of $3 \times 2$
+- $AC = `r r_matrix_to_mathjax(A%*%C)`$ is a matrix of $3 \times 3$
+- $AB' = `r r_matrix_to_mathjax(A%*%t(B))`$ is a matrix of $3 \times 3$
+- $B'A = `r r_matrix_to_mathjax(t(B)%*%A)`$ is a matrix of $2 \times 2$
+
+# 5.3.1
+Matrix form: $Y - \hat{Y} = e$
+
+$Y = \begin{bmatrix}Y_1\\Y_2\\Y_3\\Y_4\end{bmatrix}$ is a $4 \times 1$ matrix
+
+$\hat{Y} = \begin{bmatrix}\hat{Y_1}\\\hat{Y_2}\\\hat{Y_3}\\\hat{Y_4}\end{bmatrix}$ is a $4 \times 1$ matrix
+
+$e = \begin{bmatrix}(Y_1 - \hat{Y_1})\\(Y_2 - \hat{Y_2})\\(Y_3 - \hat{Y_3})\\(Y_4 - \hat{Y_4})\end{bmatrix}$ is a $4 \times 1$ matrix
+
+# 5.3.2
+Matrix form: $Xe = \begin{bmatrix}X_1 e_1 + X_2 e_2 + X_3 e_3 + X_4 e_4\end{bmatrix} = 0$
+
+$X = \begin{bmatrix}X_1&X_2&X_3&X_4\end{bmatrix}$ is a matrix of $1 \times 4$
+
+$e = \begin{bmatrix}e_1\\e_2\\e_3\\e_4\end{bmatrix}$ is a matrix of $4 \times 1$
+
+# 5.8.a
+```{r 5.8}
+B <- matrix(c(1, 5, 0, 1, 0, 5, 1, 0, 5), nrow = 3, ncol = 3, byrow = TRUE)
+det_B <- det(B)
+rank_B <- qr(B)$rank
+# pracma::rref(B)
+```
+$det(B) = `r det_B`$
+
+Since $det(B) = 0$, this is linearly dependent.
+
+# 5.8.b
+$rref(B) = `r r_matrix_to_mathjax(pracma::rref(B))`$
+
+$rank(B) = `r rank_B`$
+
+# Appendix
+```{r appendix, results="asis"}
+# Get all the labels
+all_labels <- knitr::all_labels()
+
+# Print out code along with labels
+for (label in all_labels) {
+  if (label == "setup" || label == "appendix") {
+    next
+  }
+
+  code <- knitr::knit_code$get(label)
+
+  cat("##", label, "\n")
+  cat("```r \n")
+  cat(code, sep = "\n")
+  cat("```\n")
+}
+```
