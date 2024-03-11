@@ -1,0 +1,92 @@
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r Inputs}
+y <- c(199, 205, 196, 200, 218, 220)
+predictor <- c(16, 15, 14, 13, 22, 20)
+alpha <- 0.05 # For number 3
+```
+
+```{r Function}
+r_matrix_to_mathjax <- function(mat) {
+  nrow <- dim(mat)[1]
+  ncol <- dim(mat)[2]
+
+  result <- "\\begin{bmatrix}"
+  for (i in 1:nrow) {
+    result <- paste(result, "", paste(mat[i, ], collapse = "&"), "\\\\")
+  }
+  result <- paste(result, "\\end{bmatrix}")
+
+  return(result)
+}
+```
+
+# Table
+```{r Table}
+n <- length(predictor)
+X <- cbind(1, predictor)
+X_t <- t(X)
+
+knitr::kable(data.frame(Observation = 1:n, Y_i = y, X_i = predictor))
+```
+
+```{r 1}
+# Note - solve is the inverse of the matrix
+x_prime_x_inv <- round(solve(X_t %*% X), 4)
+b <- round(solve(X_t %*% X) %*% (X_t %*% y), 4)
+```
+
+# 1
+$(X'X)^{-1} = `r r_matrix_to_mathjax(x_prime_x_inv)`$
+
+$b = `r r_matrix_to_mathjax(b)`$
+
+# 2
+```{r 2}
+SSE <- t(y - X %*% b) %*% (y - X %*% b)
+df <- n - 2
+MSE <- SSE / df
+
+Var.b <- round(solve(X_t %*% X) * as.numeric(MSE), 4)
+```
+
+$s\{b_0\} = `r Var.b[1, 1]`$
+
+$s\{b_1\} = `r Var.b[2, 2]`$
+
+$s\{b_0, b_1\} = `r Var.b[1, 2]`$
+
+# 3
+```{r 3}
+CI.b0 <- round(b[1] + c(-1, 1) * qt(1 - alpha / 2, df) * sqrt(Var.b[1, 1]), 4)
+CI.b1 <- round(b[2] + c(-1, 1) * qt(1 - alpha / 2, df) * sqrt(Var.b[2, 2]), 4)
+```
+
+$\alpha = `r alpha`$
+
+$b_0 \in [`r CI.b0[1]`, `r CI.b0[2]`]$
+
+$b_1 \in [`r CI.b1[1]`, `r CI.b1[2]`]$
+
+\newpage
+# Appendix
+```{r appendix, results="asis"}
+# Get all the labels
+all_labels <- knitr::all_labels()
+
+# Print out code along with labels
+for (label in all_labels) {
+  if (label == "setup" || label == "appendix") {
+    next
+  }
+
+  code <- knitr::knit_code$get(label)
+
+  cat("```r \n")
+  cat("# ", label, "\n", sep = "")
+  cat(code, sep = "\n")
+  cat("```\n")
+}
+```
