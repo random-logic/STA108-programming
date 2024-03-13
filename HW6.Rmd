@@ -42,21 +42,43 @@ $X'X = `r r_matrix_to_mathjax(Xt)` `r r_matrix_to_mathjax(X)` = `r r_matrix_to_m
 
 $X'Y = `r r_matrix_to_mathjax(Xt)` `r r_matrix_to_mathjax(Y)` = `r r_matrix_to_mathjax(Xt.Y)`$
 
+# 5.5 Idempotent Proof
+Using R:
+
 $H^2 = `r r_matrix_to_mathjax(H.2)`$
 
 $H = `r r_matrix_to_mathjax(H)`$
 
 $\therefore H^2 = H$
 
-# 5.17.a
+By Hand:
+
+$H ^ 2 = (X(X'X)^{-1}X')(X(X'X)^{-1}X')$
+
+$\to H ^ 2 = (X(X^{-1}X'^{-1})X')(X(X'X)^{-1}X')$
+
+$\to H ^ 2 = (XX^{-1}X'^{-1}X')(X(X'X)^{-1}X')$
+
+$\to H ^ 2 = ((XX^{-1})(X'^{-1}X'))(X(X'X)^{-1}X')$
+
+$\to H ^ 2 = (II)(X(X'X)^{-1}X')$
+
+$\to H ^ 2 = I(X(X'X)^{-1}X')$
+
+$\to H ^ 2 = X(X'X)^{-1}X'$
+
+$\to H ^ 2 = H$
+
+$\therefore$ $H$ is idempotent
+
+# 5.17
 $W_1 = \begin{bmatrix} 1 & 1 & 1 \end{bmatrix} Y$
 
 $W_2 = \begin{bmatrix} 1 & -1 & 0 \end{bmatrix} Y$
 
 $W_3 = \begin{bmatrix} 1 & -1 & -1 \end{bmatrix} Y$
 
-# 5.17.b
-$W = \begin{bmatrix} W_1 \\ W_2 \\ W_3 \end{bmatrix}$
+$W = \begin{bmatrix} W_1 \\ W_2 \\ W_3 \end{bmatrix} = \begin{bmatrix} Y_1 + Y_2 + Y_3 \\ Y_1 - Y_2 \\ Y_1 - Y_2 - Y_3 \end{bmatrix}$
 
 $E\{W\} = \begin{bmatrix} 
   \mu_1 + \mu_2 + \mu_3 \\
@@ -64,8 +86,42 @@ $E\{W\} = \begin{bmatrix}
   \mu_1 - \mu_2 - \mu_3
   \end{bmatrix}$
 
-# 5.24
-??
+# 5.24.a
+```{r 5.24}
+beta_hat <- solve(Xt.X) %*% Xt %*% Y
+
+Y_hat <- X %*% beta_hat
+residuals <- Y - Y_hat
+
+Y_mean <- mean(Y)
+SSR <- sum((Y_hat - Y_mean)^2)
+
+SSE <- sum(residuals ** 2)
+
+n <- length(x1)
+dfSSE <- n - 2
+MSE <- SSE / dfSSE
+Var.b <- solve(Xt.X) * as.numeric(MSE)
+
+X1h <- 4
+Yh <- beta_hat[1] + beta_hat[2] * X1h
+
+X1h <- 4
+x_h <- c(1, X1h)
+s2_pred <- MSE * (1 + t(x_h) %*% solve(Xt.X) %*% x_h)
+```
+1. $\hat \beta = `r r_matrix_to_mathjax(round(beta_hat, 4))`$
+2. $e = `r r_matrix_to_mathjax(round(residuals, 4))`$
+3. $SSR = `r round(SSR, 4)`$
+4. $SSE = `r round(SSE, 4)`$
+5. $s^2\{b\} = `r r_matrix_to_mathjax(round(Var.b, 4))`$
+6. $E\{Y_h\} = `r round(Yh, 4)`$
+7. $s^2\{pred\} = `r round(s2_pred, 4)`$
+
+# 5.24.b
+1. $s\{b_0, b_1\} = `r round(Var.b[1, 2], 4)`$
+2. $s\{b_0\} = `r round(Var.b[1, 1], 4)`$
+3. $s\{b_1\} = `r round(Var.b[2, 2], 4)`$
 
 # 6.1.a
 $Y = \beta^T X + \epsilon$
