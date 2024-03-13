@@ -119,9 +119,12 @@ s2_pred <- MSE * (1 + t(x_h) %*% solve(Xt.X) %*% x_h)
 7. $s^2\{pred\} = `r round(s2_pred, 4)`$
 
 # 5.24.b
-1. $s\{b_0, b_1\} = `r round(Var.b[1, 2], 4)`$
-2. $s\{b_0\} = `r round(Var.b[1, 1], 4)`$
-3. $s\{b_1\} = `r round(Var.b[2, 2], 4)`$
+1. $s^2\{b_0, b_1\} = `r round(Var.b[1, 2], 4)`$
+   
+   $s\{b_0, b_1\} = `r round(sqrt(-Var.b[1, 2]), 4)`i = NaN$
+
+2. $s^2\{b_0\} = `r round(Var.b[1, 1], 4)`$
+3. $s\{b_1\} = `r round(sqrt(Var.b[2, 2]), 4)`$
 
 # 6.1.a
 $Y = \beta^T X + \epsilon$
