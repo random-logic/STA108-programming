@@ -2,6 +2,154 @@
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+```{r Libraries, include=FALSE}
+# Load required libraries
+library(ggplot2)
+library(GGally)
+```
+
+# 6.15.b
+The scatter plot matrix shows correlations between any two variables, and visually represents it. It also represents the distributions of each variable. There seems to be a decent correlation with all variables.
+```{r 6.15.b}
+data <- read.table("CH06PR15.txt")
+colnames(data) <- c("PatientSatisfaction", "PatientAge",
+                    "SeverityOfIllness", "AnxietyLevel")
+
+# Scatter Plot Matrix
+ggpairs(data,
+        columns = c("PatientAge", "SeverityOfIllness",
+                    "AnxietyLevel", "PatientSatisfaction"),
+        progress = FALSE)
+
+# Correlation Matrix
+correlation_matrix <- cor(data[, c("PatientAge", "SeverityOfIllness",
+                                   "AnxietyLevel", "PatientSatisfaction")])
+knitr::kable(round(data.frame(correlation_matrix), 4))
+```
+
+# 6.15.c
+```{r 6.15.c}
+model <- lm(PatientSatisfaction ~ PatientAge +
+              SeverityOfIllness + AnxietyLevel, data = data)
+co <- round(coef(model), 4)
+```
+
+$\hat Y = `r co[1]` + `r co[2]` x_1 + `r co[3]` x_2 + `r co[4]` x_3$
+
+$b_2$ is the coefficient for SeverityOfIllness. It shows that patient satisfication decreases by $`r abs(co[3])`$ every time you increase SeverityOfIllness by one.
+
+# 6.16.a
+$H_0:$ $\beta_1 = \beta_2 = \beta_3 = 0$
+
+$H_a:$ At least one $\beta_i \neq 0$ for $i \in \{1, 2, 3\}$
+
+```{r 6.16.a}
+model_summary <- summary(model)
+f_statistic <- model_summary$fstatistic[1]
+df1 <- model_summary$fstatistic[2]
+df2 <- model_summary$fstatistic[3]
+p_value <- pf(f_statistic, df1 = df1, df2 = df2, lower.tail = FALSE)
+```
+
+$F_s = `r f_statistic`$
+
+$p = `r p_value`$
+
+Decision rule: Reject $H_0$ if $p \leq \alpha$, otherwise accept $H_0$
+
+Since $p \leq \alpha$, we reject $H_0$. Therefore, at least one $\beta_i \neq 0$, and this means that there is a regression relation.
+
+# 6.17.a
+```{r 6.17.a}
+new_data <- data.frame(PatientAge = 35, SeverityOfIllness = 45,
+                       AnxietyLevel = 2.2)
+confidence_interval <- predict(model, newdata = new_data,
+                               interval = "confidence", level = 0.90)
+```
+
+The 90% confidence interval is $[`r confidence_interval[2]`, `r confidence_interval[3]`]$
+
+# 6.17.b
+```{r 6.17.b}
+new_data <- data.frame(PatientAge = 35, SeverityOfIllness = 45,
+                       AnxietyLevel = 2.2)
+confidence_interval <- predict(model, newdata = new_data,
+                               interval = "prediction", level = 0.90)
+```
+
+The 90% confidence interval is $[`r confidence_interval[2]`, `r confidence_interval[3]`]$
+
+# 7.22
+They observed the statistical significance of each regression coefficient rather than the significance of the overall model. There is a different F-statistic to compute when testing for whether there is significance in overall regression model. Even though the expanded model had less statistically significant coefficients, the model itself can still be statistically significant.
+
+# 8.4.a
+```{r 8.4.a}
+data <- read.table("CH01PR27.txt")
+colnames(data) <- c("y", "x")
+model <- lm(y ~ x + I(x^2), data)
+
+# Plot the data points
+predicted <- predict(model)
+plot(data$x, data$y, xlab = "x", ylab = "y", main = "Quadratic Fit and Data")
+
+# Sort the data by x values for better visualization
+sorted_data <- data[order(data$x), ]
+
+# Plot the fitted regression function
+lines(sorted_data$x, predicted[order(data$x)], col = "red")
+
+# Add legend
+legend("topleft", legend = "Fitted Regression Function", col = "red", lty = 1)
+
+# Add grid for better visualization (optional)
+grid()
+```
+
+The quadratic function seems to be a good fit of the data. However, it looks like a linear function can also fit the data, which would be better as it is simpler. 
+
+# 8.4.b
+$H_0:$ $\beta_1 = \beta_2 = 0$
+
+$H_a:$ At least one $\beta_i \neq 0$ for $i \in \{1, 2\}$
+
+```{r 8.4.b}
+model_summary <- summary(model)
+f_statistic <- model_summary$fstatistic[1]
+df1 <- model_summary$fstatistic[2]
+df2 <- model_summary$fstatistic[3]
+p_value <- pf(f_statistic, df1 = df1, df2 = df2, lower.tail = FALSE)
+```
+
+$F_s = `r f_statistic`$
+
+$p = `r p_value`$
+
+Decision rule: Reject $H_0$ if $p \leq \alpha$, otherwise accept $H_0$
+
+Since $p \leq \alpha$, we reject $H_0$. Therefore, at least one $\beta_i \neq 0$, and this means that there is a regression relation.
+
+# 8.4.e
+$H_0:$ $\beta_2 = 0$
+
+$H_a:$ $\beta_2 \neq 0$
+
+```{r 8.4.e}
+f_statistic <- model_summary$coefficients[]
+p_value <- model_summary$coefficients["I(x^2)", "Pr(>|t|)"]
+```
+
+$p = `r p_value`$
+
+Decision rule: Reject $H_0$ if $p \leq \alpha$, otherwise accept $H_0$
+
+Since $p > \alpha$, we accept $H_0$. Therefore, $\beta_2 = 0$ and we do not need the $x^2$ term in our model.
+
+# 8.4.f
+```{r 8.4.f}
+co <- round(coef(model), 4)
+```
+$\hat Y = `r co[1]` + `r co[2]` x + `r co[3]` x^2$
+
 # Appendix
 ```{r appendix, results="asis"}
 # Get all the labels
