@@ -3,8 +3,8 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r Inputs}
-y <- c(199, 205, 196, 200, 218, 220)
-predictor <- c(16, 15, 14, 13, 22, 20)
+y <- c(199, 205, 196, 200, 218, 210)
+predictor <- c(16, 15, 14, 13, 22, 18)
 alpha <- 0.05 # For number 3
 ```
 
@@ -49,14 +49,17 @@ SSE <- t(y - X %*% b) %*% (y - X %*% b)
 df <- n - 2
 MSE <- SSE / df
 
-Var.b <- round(solve(X_t %*% X) * as.numeric(MSE), 4)
+Var.b <- solve(X_t %*% X) * as.numeric(MSE)
+s.b_0 <- round(sqrt(Var.b[1, 1]), 4)
+s.b_1 <- round(sqrt(Var.b[2, 2]), 4)
+s.b_12 <- round(Var.b[1, 2], 4)
 ```
 
-$s\{b_0\} = `r Var.b[1, 1]`$
+$s\{b_0\} = `r s.b_0`$
 
-$s\{b_1\} = `r Var.b[2, 2]`$
+$s\{b_1\} = `r s.b_1`$
 
-$s\{b_0, b_1\} = `r Var.b[1, 2]`$
+$s\{b_0, b_1\} = `r s.b_12`$
 
 # 3
 ```{r 3}
